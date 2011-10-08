@@ -57,8 +57,9 @@ ko.observableArray['fn'] = {
         var predicate = typeof valueOrPredicate == "function" ? valueOrPredicate : function (value) { return value === valueOrPredicate; };
         for (var i = underlyingArray.length - 1; i >= 0; i--) {
             var value = underlyingArray[i];
-            if (predicate(value))
-                underlyingArray[i]["_destroy"] = true;
+            if (predicate(value)){
+		ko.isObservable(underlyingArray[i]["_destroy"])? underlyingArray[i]["_destroy"](true) : underlyingArray[i]["_destroy"] = true;
+	    }
         }
         this.valueHasMutated();
     },
